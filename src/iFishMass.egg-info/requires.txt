@@ -1,0 +1,7 @@
+pandas
+openpyxl
+numpy
+tqdm
+pyteomics
+spectrum-utils
+lxml

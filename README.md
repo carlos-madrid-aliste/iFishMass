@@ -1,0 +1,376 @@
+# iFishMass
+
+Easy way to extract M/Z and intensities from mzXML files. 
+
+
+
+## Features
+
+**iFishMass** is a Python program that filter mzXML files by a list of m/z and 
+
+- extract intensities for the masses __among__ all samples files.
+
+- calculate the highest intensities for the masses __among all__ set of sample files.
+
+- calculate the highest intensities for the masses __per__ set of sample files.
+
+- generate a graphical template of the samples with the most efficient target production
+
+
+**iFishMass** requires a configuration file named **peak.ini** to run properly.
+
+**peak.ini** is used to specify a directory containing a set of mzXML files to
+analyze, ms_level used to extract the m/z intensities, list of masses and so on.
+
+
+
+# Usage
+To run **iFishMass** run the comand line-interface **ifishmass**. The following options are available:
+
+```sh
+	ifishmass --help
+	usage: iFishMass [-h] [--inifile INIFILE | --printini]
+
+	- inifile    - is a mandatory argument (path to configuration file [peak.ini])
+	- h,  --help - show help
+	- printini   - creates a basic configuration file named peak.ini in the 
+			   current working directory.
+```
+
+
+
+# Output Files
+
+
+**iFishMass** filter mzXML and produces the following files: 
+
+
+- **intensities_among_all_raw.csv** file that list all intensities for a given list of masses (m/z) 
+in each sample (RAW) files.
+
+- **highest_intensity_among_all_raw.csv** file that list the highest intensities for a given list of masses (m/z) 
+among all sample (RAW) files.
+
+- **highest_intensities_per_raw.csv** file that list the highest intensity value for a given m/z in all scans of a 
+given sample (RAW) file. 
+
+- **highest_intensities_per_raw_wide.csv** the same as highest_intensities_per_raw.csv but in wide-format. This file provides
+an overview of the samples with the most efficient target production. 
+
+
+- **analysis_plot.xlsx** optional file depicting the samples with the most efficient target production. 
+
+M/Z searching and filtering is done using a tolerance expressed in parts per million (ppm) in a configuration file.
+
+
+
+# INSTALLATION 
+
+
+The easiest way to work with **iFishMass** is by using Anaconda and configuring 
+a virtual environment. Anaconda is a Python distribution plus a packaging manager 
+called **conda**.
+
+
+> Virtual environment is a tool that helps decoupling package
+> dependencies of different projects by creating an isolated context for each of
+> them. More specifically virtual environments create a directory with a
+> particular Python version and packages specific for the project all in the same place. 
+> By doing so, clashing among Python projects using incompatible package versions is avoided. 
+
+
+**iFishMass** installation is a four steps process.
+ 
+1. Anaconda installation
+2. Create and configure a virtual environment for **iFishMass**
+3. Install packages needed by **iFishMass**
+4. Install **iFishMass** with pip
+
+
+# INSTALLATION INSTRUCTIONS FOR WINDOWS 10/11 
+
+**1. ANACONDA INSTALLATION**
+
+Skip to **step #2** if Anaconda3 is already installed in your computer. 
+
+You can download Anaconda3 from [here](https://www.anaconda.com/products/distribution). 
+Follow the installer instructions. It is recommended that you install Anaconda 
+for the current user only (selecting Just Me) and choose Register Anaconda 3 
+as my default Python3 in the Advanced Installation Options.
+
+A detailed Anaconda installation instructions for Windows can be found
+[here](https://docs.anaconda.com/anaconda/install/windows/)
+
+
+
+
+**2. CREATE AND CONFIGURE A VIRTUAL ENVIRONMENT**
+
+Python virtual environments are configured with **conda**. 
+
+
+**a.** Click on the Windows menu and look for Anaconda Prompt (anaconda3).
+
+
+**b.** Open Anaconda Prompt (anaconda3) and run the following command.
+
+	   
+```sh
+	conda create --name signal python=3.8
+```
+
+   	
+
+Command above creates a virtual environment named  **signal**  for python 3.8
+
+
+**c.** Activate the new virtual environment.  
+
+```sh
+  	conda activate signal
+```
+
+Command above activates the virtual environment named **signal**.
+
+
+Once  **signal**  is activated prompt changes to something like this
+
+```sh
+
+    (signal) C:\Users
+```
+
+
+**3. INSTALL PACKAGES NEEDED BY iFishMass**
+
+**a.** In your working directory create a file named **requirements.txt**. 
+
+> The **requirements.txt** is a file listing all the dependencies specific to **iFishMass**. In simple words, dependecies are external
+> Python packages that **iFishMass** relies onto. The dependencies are usually found on the Python Package Index [PyPI 
+> repository](https://pypi.org/).
+   
+
+**requirements.txt** should have the following lines
+
+```sh
+certifi==2021.10.8
+llvmlite==0.38.0
+lxml==4.9.1
+matplotlib==3.5.3
+networkx
+numba==0.55.2
+numpy==1.22.4
+packaging 
+pandas==1.4.3
+pickydict
+Pillow 
+pycairo==1.21.0
+pycparser 
+pyOpenSSL 
+pyparsing 
+PySocks 
+pyteomics==4.5.3
+python-dateutil 
+pytz 
+reportlab==3.5.68
+requests
+scipy==1.9.1
+six 
+spectrum-utils==0.3.5
+SQLAlchemy
+unicodedata2
+urllib3==1.26.12
+win-inet-pton 
+wincertstore==0.2
+wrapt
+tqdm==4.64.0
+openpyxl==3.0.10
+```
+
+**b.** Once the virtual environment **signal** is activated type the following command in
+the Anaconda prompt:
+
+```sh
+    (signal) C:\Users>pip install -r requirements.txt
+```
+
+The above command installs all packages required by **iFishMass**.
+
+
+**4. Install iFishMass with pip**
+
+Having **signal** activated type the following command in
+the Anaconda prompt:
+
+```sh
+    (signal) C:\Users>pip install -i https://test.pypi.org/simple/ iFishMass
+```
+
+The above command installs the package **iFishMass** in your virtual environment named **signal**.
+
+
+
+___________________________________________________________________
+
+
+
+# RUNNING iFishMass 
+
+
+**1. CONVERT RAW FILES TO mzXML**
+
+**iFishMass** cannot read binary files directly from the Mass Spec. Binary files
+need to be converted to mzXML format.
+ 
+
+> So far **iFishMass** has been tested using the mzXML files generated by
+> RawConverter 1.2.0.0 
+> 
+> RawConverter can be downloaded from [here](http://fields.scripps.edu/rawconv/)
+> 
+> Before running **iFishMass** convert all your RAW files into mzXML format using
+> RawConverter 1.2.0.0
+
+
+
+**2. GENERATE A CONFIGURATION FILE**
+
+
+**iFishMass** requires a configuration file named **peak.ini** to run properly. 
+
+A basic **peak.ini** can be generated automatically by **iFishMass** typing
+
+
+```sh
+
+    (signal) C:\Users>ifishmass --printini
+```
+
+The above command generate a **peak.ini** file in the current working directory.
+
+> **peak.ini** is a simple text file consisting of key-value pairs of **properties**, and 
+> **sections** that organize the properties. 
+>
+> **peak.ini** consist in nine sections;  **[data_folder], [ms_level], [ppm], [list_of_masses], 
+> [internal_standard], [modified_peptides], [unmodified_peptides], [debug] and, [output]** .
+>
+> **Sections [data_folder], [ms_level], [list_of_masses], [ppm], [output] and, [list_of_massess] are mandatory.**
+>
+> **[data_folder]** specify a directory containing the group of mzXML files
+> to be processed. 
+>
+> **[output]** section specify a directory where temporary CSV files are stored. This
+> directory must be created and specified otherwise program will not run.
+>
+
+__If you want to use **iFishMass** to just filter a set of mzXML files by a list of m/z
+  and extract the intensities for the masses in a set of sample files, then do not 
+  add any key-value pairs to the sections [internal_standard], [modified_peptides] and,
+  [unmodified_peptides]. In this case, a graphical template of the samples with the most
+  efficient target production wil not be generated__.
+
+
+
+
+**peak.ini section description**
+
+```sh
+        [data_folder]
+        # directory containing mzXML file(s).
+        location=C:\Users\cmadrid\Downloads\Merck_Expt6_DI_LODLOQ_Aug_2022\MZXML
+
+        [ms_level]
+        # select the MS level used to extract the m/z intensities.
+        # precursor=1, ms/ms=2
+        level=1
+
+        [ppm]
+        # mass tolerance for signal extraction, expressed in parts per million (ppm).
+        value=10
+
+        [list_of_masses]
+        # m/z values to extract.
+        # List masses in the same order you would like to see in the final spreadsheet.
+        value1=881.39739
+        value2=1761.78747
+        value3=587.93404
+        value4=441.20236
+        
+        # To utilize the graphical output template for projects quantifying the relative
+        # abundance of modifications, please specifiy the value number into "unmodified",
+        # "modified" and  "internal standard". If a signal is ionized with multiple 
+        # charge states, please include them all.   
+        [internal_standard]
+        value1=1296.68481
+        value2=648.84607
+        
+        [modified_peptides]
+        value1=881.39739
+        value2=1761.78747
+        
+        [unmodified_peptides]
+        value1=1189.48879
+        value2=1190.49607
+        
+        [debug]
+        # for debugging purposes. debug=True or debug=False
+        debug=False
+
+        [output]
+        # REQUIRED
+        # directory where to dump temporary files.
+        location=C:/temp/MERCK_AUGUST
+```
+
+
+
+
+**3. RUN iFishMass**
+
+
+Prior running **iFishMass** modify **peak.ini** accordingly then activates the **signal** virtual environment. 
+Your prompt should look like this
+
+```sh
+    (signal) C:\Users\  
+```
+
+Run **iFishMass** executing the following command in the Anaconda Prompt
+
+```sh
+    (signal) C:\Users\cmadrid>ifishmass
+```
+
+The above command runs **iFishMass** assuming that **peak.ini** is located in the directory 
+C:\Users\cmadrid>.  
+
+
+___________________________________________________________________
+
+
+Configuration file can be named differently and stored in any folder that you 
+have permission to read. In that case, **ifishmass** can be executed using the
+following syntax:
+
+
+```sh
+    (signal) C:\Users>ifishmass --inifile path_to_directory_containing_configuration_file
+```
+
+Assuming that configuration file is named **config.ini** and located in C:\Data\
+
+**iFishMass** can be executed typing the command below:
+
+```sh
+    (signal) C:\Users\ifishmass  -inifile C:\Data\config.ini    
+```
+
+
+| Authors | |
+|---------|----------|
+| Carlos Madrid-Aliste | carlos.madrid-aliste@einsteinmed.edu, creggae@gmail.com|
+| Jennifer Aguilan ||
+| Simone Sidoli | |
+
+
+

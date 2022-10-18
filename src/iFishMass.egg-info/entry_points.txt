@@ -1,0 +1,2 @@
+[console_scripts]
+iFishMass = iFishMass.__main__:main

@@ -1,0 +1,33 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iFishMass"
+version = "0.1.9"
+description = "Easy way to extract M/Z and intensities from mzXML files"
+readme = "README.md"
+authors = [{ name = "Carlos Madrid-Aliste", email = "creggae@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["Mass Spec", "Mass", "intensities", "filter", "iFishMass", "spectrum", "m/z", "MS"]
+dependencies = [
+    "pandas",
+    "openpyxl",
+    "numpy",
+    "tqdm",
+    "pyteomics",
+    "spectrum-utils",
+    "lxml",
+]
+
+[project.urls]
+Homepage = "https://github.com/carlos-madrid-aliste/iFishMass.git"
+
+[project.scripts]
+iFishMass = "iFishMass.__main__:main"
+
